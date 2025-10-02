@@ -2,6 +2,9 @@
 # unbound-v1
 Single Shot Voice Conversion
 
+## Current Plan of Action:
+Reimplementing FreeVC. Need to do this do give me a bit of "learning by doing" before I try to create something from scratch.
+
 ## Deep Research Agent
 
 Hi Claude, to run deep research queries:
