@@ -62,6 +62,11 @@ def main():
         help="Read query from a markdown file"
     )
     parser.add_argument(
+        "-m", "--manual",
+        action="store_true",
+        help="Read query from manual_input.md"
+    )
+    parser.add_argument(
         "--output-dir",
         type=str,
         default="./research_sessions",
@@ -87,7 +92,17 @@ def main():
     query = None
     query_source = "cli"
 
-    if args.input_file:
+    if args.manual:
+        # Read from manual_input.md
+        try:
+            with open("manual_input.md", "r") as f:
+                query = f.read().strip()
+            query_source = "file:manual_input.md"
+            console.print(f"[green]✓[/green] Loaded query from manual_input.md")
+        except Exception as e:
+            console.print(f"[red]Error reading manual_input.md: {e}[/red]")
+            sys.exit(1)
+    elif args.input_file:
         # Read from markdown file
         try:
             with open(args.input_file, "r") as f:
