@@ -236,24 +236,4 @@ def stream_research(client, request_params, tracker):
     elif not response_id:
         console.print(f"\n[red]Error: No response ID captured from stream[/red]")
 
-    # Debug: Save final response to disk
-    if final_response:
-        import json
-        import warnings
-        from pathlib import Path
-        debug_file = Path("last_response_debug.json")
-        try:
-            # Suppress Pydantic serialization warnings
-            with warnings.catch_warnings():
-                warnings.filterwarnings("ignore", category=UserWarning, module="pydantic")
-                if hasattr(final_response, 'model_dump'):
-                    data = final_response.model_dump()
-                else:
-                    data = {attr: getattr(final_response, attr) for attr in dir(final_response) if not attr.startswith('_')}
-            with open(debug_file, 'w') as f:
-                json.dump(data, f, indent=2, default=str)
-            console.print(f"[dim]Debug: Response saved to {debug_file}[/dim]")
-        except Exception as e:
-            console.print(f"[dim]Could not save debug response: {e}[/dim]")
-
     return final_response, events
