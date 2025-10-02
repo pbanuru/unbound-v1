@@ -5,106 +5,14 @@ Uses OpenAI's deep research models to conduct comprehensive research on user que
 """
 
 import argparse
-import json
 import os
-import re
 import sys
-import time
-from datetime import datetime
-from pathlib import Path
 from openai import OpenAI
+from rich.console import Console
 
-
-def generate_folder_name(client, query):
-    """Generate a concise folder name based on the query using GPT."""
-    try:
-        response = client.responses.create(
-            model="gpt-5-mini",
-            reasoning={"effort": "low"},
-            input=f"Generate a short, descriptive folder name (2-4 words, snake_case) for this research query: '{query}'. Only return the folder name, nothing else.",
-        )
-        folder_name = response.output_text.strip().lower()
-        # Clean up the folder name
-        folder_name = re.sub(r'[^\w\s-]', '', folder_name)
-        folder_name = re.sub(r'[-\s]+', '_', folder_name)
-        return folder_name
-    except Exception as e:
-        # Fallback to a simple truncated version
-        fallback = re.sub(r'[^\w\s-]', '', query.lower())[:40]
-        fallback = re.sub(r'[-\s]+', '_', fallback)
-        return fallback
-
-
-def create_research_folder(base_dir, folder_name):
-    """Create a unique research folder with disambiguation code if needed."""
-    base_path = Path(base_dir) / folder_name
-
-    # If folder doesn't exist, create it
-    if not base_path.exists():
-        base_path.mkdir(parents=True, exist_ok=True)
-        return base_path
-
-    # If it exists, add disambiguation code
-    counter = 1
-    while True:
-        disambiguated_path = Path(base_dir) / f"{folder_name}_{counter:03d}"
-        if not disambiguated_path.exists():
-            disambiguated_path.mkdir(parents=True, exist_ok=True)
-            return disambiguated_path
-        counter += 1
-
-
-def save_research_session(folder_path, query, response, args, query_source="cli"):
-    """Save the research session data to files."""
-    timestamp = datetime.now().isoformat()
-
-    # Save input query
-    input_file = folder_path / "input.md"
-    with open(input_file, "w") as f:
-        f.write(f"# Research Query\n\n")
-        f.write(f"**Timestamp:** {timestamp}\n\n")
-        f.write(f"**Source:** {query_source}\n\n")
-        f.write(f"**Model:** {args.model}\n\n")
-        f.write(f"**Max Tool Calls:** {args.max_tool_calls}\n\n")
-        f.write(f"## Query\n\n{query}\n")
-
-    # Save output results
-    output_file = folder_path / "output.md"
-    with open(output_file, "w") as f:
-        f.write(f"# Research Results\n\n")
-        f.write(f"**Timestamp:** {timestamp}\n\n")
-        f.write(f"**Response ID:** {response.id}\n\n")
-        f.write(f"**Status:** {response.status}\n\n")
-        f.write(f"## Results\n\n{response.output_text}\n")
-
-    # Save metadata and tool usage
-    metadata = {
-        "timestamp": timestamp,
-        "query": query,
-        "query_source": query_source,
-        "model": args.model,
-        "response_id": response.id,
-        "status": response.status,
-        "max_tool_calls": args.max_tool_calls,
-        "web_search_enabled": not args.no_web_search,
-        "code_interpreter_enabled": args.code_interpreter,
-        "background_mode": not args.no_background,
-    }
-
-    # Add tool usage statistics
-    if hasattr(response, 'output') and response.output:
-        web_searches = sum(1 for item in response.output if item.get('type') == 'web_search_call')
-        code_calls = sum(1 for item in response.output if item.get('type') == 'code_interpreter_call')
-        metadata["tool_usage"] = {
-            "web_searches": web_searches,
-            "code_interpreter_calls": code_calls,
-        }
-
-    metadata_file = folder_path / "metadata.json"
-    with open(metadata_file, "w") as f:
-        json.dump(metadata, f, indent=2)
-
-    return input_file, output_file, metadata_file
+from utils import generate_folder_name, create_research_folder
+from catalog import save_research_session
+from streaming import ResearchTracker, stream_research
 
 
 def main():
@@ -167,10 +75,12 @@ def main():
 
     args = parser.parse_args()
 
+    console = Console()
+
     # Get API key from environment
     api_key = os.environ.get("OPENAI_API_KEY")
     if not api_key:
-        print("Error: OPENAI_API_KEY environment variable not set", file=sys.stderr)
+        console.print("[red]Error: OPENAI_API_KEY environment variable not set[/red]")
         sys.exit(1)
 
     # Get query from various sources
@@ -183,13 +93,13 @@ def main():
             with open(args.input_file, "r") as f:
                 query = f.read().strip()
             query_source = f"file:{args.input_file}"
-            print(f"Loaded query from {args.input_file}")
+            console.print(f"[green]✓[/green] Loaded query from {args.input_file}")
         except Exception as e:
-            print(f"Error reading input file: {e}", file=sys.stderr)
+            console.print(f"[red]Error reading input file: {e}[/red]")
             sys.exit(1)
     elif args.interactive:
         # Interactive mode
-        print("Enter your research query (press Ctrl+D when done):")
+        console.print("[cyan]Enter your research query (press Ctrl+D when done):[/cyan]")
         query = sys.stdin.read().strip()
         query_source = "interactive"
     elif args.query:
@@ -198,11 +108,11 @@ def main():
         query_source = "cli"
     else:
         # No query provided
-        print("Error: No query provided. Use a query argument, --input-file, or --interactive", file=sys.stderr)
+        console.print("[red]Error: No query provided. Use a query argument, --input-file, or --interactive[/red]")
         sys.exit(1)
 
     if not query:
-        print("Error: Query is empty", file=sys.stderr)
+        console.print("[red]Error: Query is empty[/red]")
         sys.exit(1)
 
     # Initialize client
@@ -211,10 +121,10 @@ def main():
     # Generate folder structure if saving
     research_folder = None
     if not args.no_save:
-        print("Generating folder name...")
+        console.print("[cyan]Generating folder name...[/cyan]")
         folder_name = generate_folder_name(client, query)
         research_folder = create_research_folder(args.output_dir, folder_name)
-        print(f"Research will be saved to: {research_folder}")
+        console.print(f"[green]✓[/green] Research will be saved to: [bold]{research_folder}[/bold]")
 
     # Build tools list
     tools = []
@@ -224,80 +134,69 @@ def main():
         tools.append({"type": "code_interpreter", "container": {"type": "auto"}})
 
     if not tools:
-        print("Error: At least one tool must be enabled", file=sys.stderr)
+        console.print("[red]Error: At least one tool must be enabled[/red]")
         sys.exit(1)
 
-    # Build request parameters
+    # Build request parameters - always use background and streaming for better UX
     request_params = {
         "model": args.model,
         "input": query,
-        "background": not args.no_background,
+        "background": True,  # Always use background mode with streaming
         "tools": tools,
         "max_tool_calls": args.max_tool_calls,
     }
 
-    print(f"Starting research with {args.model}...")
-    print(f"Query: {query}\n")
+    console.print(f"\n[bold cyan]Starting research with {args.model}[/bold cyan]")
+    console.print(f"[dim]Query: {query[:100]}{'...' if len(query) > 100 else ''}[/dim]\n")
 
-    # Create research request
+    # Create research request with streaming
     try:
-        response = client.responses.create(**request_params)
-
-        # Handle background mode
-        if not args.no_background:
-            print(f"Research started in background (ID: {response.id})")
-            print("Polling for completion...")
-
-            while response.status in {"queued", "in_progress"}:
-                print(f"Status: {response.status}")
-                time.sleep(5)
-                response = client.responses.retrieve(response.id)
-
-            print(f"\nFinal status: {response.status}\n")
+        tracker = ResearchTracker(args.max_tool_calls, args.model)
+        response, _ = stream_research(client, request_params, tracker)
 
         # Output results
-        if response.status == "completed":
-            print("=" * 80)
-            print("RESEARCH RESULTS")
-            print("=" * 80)
-            print()
-            print(response.output_text)
-            print()
+        if response and response.status == "completed":
+            console.print("\n[bold green]" + "=" * 80 + "[/bold green]")
+            console.print("[bold green]RESEARCH RESULTS[/bold green]")
+            console.print("[bold green]" + "=" * 80 + "[/bold green]\n")
+            console.print(response.output_text)
+            console.print()
 
             # Show tool usage summary
             if hasattr(response, 'output') and response.output:
                 web_searches = sum(1 for item in response.output if item.get('type') == 'web_search_call')
                 code_calls = sum(1 for item in response.output if item.get('type') == 'code_interpreter_call')
 
-                print("=" * 80)
-                print("TOOL USAGE SUMMARY")
-                print("=" * 80)
+                console.print("[bold cyan]" + "=" * 80 + "[/bold cyan]")
+                console.print("[bold cyan]TOOL USAGE SUMMARY[/bold cyan]")
+                console.print("[bold cyan]" + "=" * 80 + "[/bold cyan]")
                 if web_searches:
-                    print(f"Web searches: {web_searches}")
+                    console.print(f"[green]Web searches:[/green] {web_searches}")
                 if code_calls:
-                    print(f"Code interpreter calls: {code_calls}")
+                    console.print(f"[green]Code interpreter calls:[/green] {code_calls}")
 
             # Save research session
             if research_folder:
-                print()
-                print("=" * 80)
-                print("SAVING RESEARCH SESSION")
-                print("=" * 80)
+                console.print()
+                console.print("[bold cyan]" + "=" * 80 + "[/bold cyan]")
+                console.print("[bold cyan]SAVING RESEARCH SESSION[/bold cyan]")
+                console.print("[bold cyan]" + "=" * 80 + "[/bold cyan]")
                 input_file, output_file, metadata_file = save_research_session(
                     research_folder, query, response, args, query_source
                 )
-                print(f"Input saved to:    {input_file}")
-                print(f"Output saved to:   {output_file}")
-                print(f"Metadata saved to: {metadata_file}")
+                console.print(f"[green]Input saved to:[/green]    {input_file}")
+                console.print(f"[green]Output saved to:[/green]   {output_file}")
+                console.print(f"[green]Metadata saved to:[/green] {metadata_file}")
         else:
-            print(f"Error: Research failed with status: {response.status}", file=sys.stderr)
+            status = response.status if response else "unknown"
+            console.print(f"[red]Error: Research failed with status: {status}[/red]")
             sys.exit(1)
 
     except KeyboardInterrupt:
-        print("\nResearch interrupted by user", file=sys.stderr)
+        console.print("\n[yellow]Research interrupted by user[/yellow]")
         sys.exit(1)
     except Exception as e:
-        print(f"Error: {e}", file=sys.stderr)
+        console.print(f"[red]Error: {e}[/red]")
         sys.exit(1)
 
 

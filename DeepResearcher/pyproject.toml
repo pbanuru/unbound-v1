@@ -5,6 +5,7 @@ description = "CLI tool for OpenAI deep research models"
 requires-python = ">=3.8"
 dependencies = [
     "openai>=1.59.0",
+    "rich>=13.0.0",
 ]
 
 [project.scripts]

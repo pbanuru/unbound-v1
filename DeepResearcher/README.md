@@ -1,6 +1,6 @@
 # Deep Researcher
 
-A command-line tool for conducting comprehensive research using OpenAI's deep research models. Automatically catalogs research sessions with AI-generated folder names.
+A command-line tool for conducting comprehensive research using OpenAI's deep research models. Features real-time streaming progress, AI-generated folder names, and automatic session cataloging.
 
 ## Setup
 
@@ -142,10 +142,41 @@ research_sessions/
     └── metadata.json
 ```
 
+## Live Progress Tracking
+
+The tool streams research progress in real-time with a rich UI showing:
+
+- **Progress bar** - Visual indication of completion (tool calls used / max tool calls)
+- **Elapsed time** - How long the research has been running
+- **ETA** - Estimated time remaining and completion time
+- **Live statistics** - Real-time counts of web searches, code executions, etc.
+- **Recent actions** - Last 5 research actions with timestamps
+
+Example display:
+```
+┏━━━━━━━━━━━━━ Deep Research Progress ━━━━━━━━━━━━━┓
+┃         Model: o4-mini-deep-research              ┃
+┃       Elapsed: 0:02:34                            ┃
+┃      Progress: 42.0% (42/100 calls)               ┃
+┃           ETA: 3 min (finishes ~02:32:15 PM)      ┃
+┃                                                    ┃
+┃  Web Searches: 38                                 ┃
+┃    Code Calls: 4                                  ┃
+┃                                                    ┃
+┃ Recent Actions:                                   ┃
+┃    [02:29:41 PM] Searching: quantum computing    ┃
+┃    [02:29:45 PM] Opening: nature.com/article...  ┃
+┃    [02:29:50 PM] Executing code                  ┃
+┃                                                    ┃
+┃ ████████████████████░░░░░░░░░░░░░░░░░░░ 42.0%    ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+```
+
 ## Notes
 
 - Deep research can take several minutes to complete
-- Background mode is enabled by default for reliability (use `--no-background` to disable)
+- Streaming mode is always enabled for real-time progress updates
+- Background mode is enabled by default for reliability
 - Default model is `o4-mini-deep-research` (faster/cheaper, use `--model o3-deep-research` for complex tasks)
 - Tool calls are capped at 100 by default to control costs
 - Research sessions are saved by default to `./research_sessions` (use `--no-save` to disable)
