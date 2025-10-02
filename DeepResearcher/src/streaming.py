@@ -99,7 +99,7 @@ class ResearchTracker:
         stats.add_row("Model:", self.model)
         stats.add_row("Elapsed:", self.get_elapsed_time())
         stats.add_row("Progress:", f"{progress_percent:.1f}% ({self.tool_calls}/{self.max_tool_calls} calls)")
-        stats.add_row("ETA:", f"{remaining_time} (finishes ~{eta_time})")
+        stats.add_row("ETC:", f"{remaining_time} (finishes ~{eta_time})")
         stats.add_row("", "")
         stats.add_row("Web Searches:", str(self.web_searches))
         if self.code_calls > 0:
