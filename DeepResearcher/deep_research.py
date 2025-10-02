@@ -10,9 +10,9 @@ import sys
 from openai import OpenAI
 from rich.console import Console
 
-from utils import generate_folder_name, create_research_folder
-from catalog import save_research_session
-from streaming import ResearchTracker, stream_research
+from src.utils import generate_folder_name, create_research_folder
+from src.catalog import save_research_session
+from src.streaming import ResearchTracker, stream_research
 
 
 def main():
@@ -164,8 +164,8 @@ def main():
 
             # Show tool usage summary
             if hasattr(response, 'output') and response.output:
-                web_searches = sum(1 for item in response.output if item.get('type') == 'web_search_call')
-                code_calls = sum(1 for item in response.output if item.get('type') == 'code_interpreter_call')
+                web_searches = sum(1 for item in response.output if getattr(item, 'type', None) == 'web_search_call')
+                code_calls = sum(1 for item in response.output if getattr(item, 'type', None) == 'code_interpreter_call')
 
                 console.print("[bold cyan]" + "=" * 80 + "[/bold cyan]")
                 console.print("[bold cyan]TOOL USAGE SUMMARY[/bold cyan]")
@@ -187,6 +187,9 @@ def main():
                 console.print(f"[green]Input saved to:[/green]    {input_file}")
                 console.print(f"[green]Output saved to:[/green]   {output_file}")
                 console.print(f"[green]Metadata saved to:[/green] {metadata_file}")
+        elif response and response.status == "cancelled":
+            console.print(f"\n[yellow]Research was cancelled. Partial results may not be available.[/yellow]")
+            sys.exit(0)
         else:
             status = response.status if response else "unknown"
             console.print(f"[red]Error: Research failed with status: {status}[/red]")
