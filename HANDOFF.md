@@ -1,8 +1,8 @@
 # Project Handoff - Voice Conversion Research
 
-**Last Updated**: 2025-10-18 15:00 by AI (Claude)
+**Last Updated**: 2025-10-18 16:05 by AI (Claude)
 **Project Week**: 0 of 12
-**Current Phase**: Phase 0 - Strategic Research
+**Current Phase**: Phase 0 - Setup & Infrastructure
 
 ---
 
@@ -10,35 +10,58 @@
 
 - ✅ **Project structure created** (folders, docs, workflows)
 - ✅ **Documentation framework** (CLAUDE.md, RESEARCH_PLAN.md, this file)
-- 🔄 **Phase 0 in progress** (strategic research before coding)
-- ⏸️ **Blocked on** GCS bucket setup (need for datasets)
+- ✅ **GCS bucket setup complete** (gs://unbound-v1-data/ in us-west1)
+- 🔄 **VCTK dataset downloading** (curl running in background, ~14 min remaining as of 16:03)
+- ⏸️ **Ready for Phase 0 research** (can start Deep Research queries next session)
 
 ---
 
 ## What Was Just Completed
 
-### Session: 2025-10-18 Afternoon - Project Setup
+### Session: 2025-10-18 Afternoon - Infrastructure Setup
 
 **Completed**:
-1. ✅ Analyzed existing research sessions (3 sessions on voice conversion)
-2. ✅ Researched async collaboration best practices for AI-human research
-3. ✅ Designed folder structure for research project
-4. ✅ Created all folders (`docs/`, `experiments/`, `data/`, `src/`, etc.)
-5. ✅ Wrote **CLAUDE.md** - Instructions for AI researcher across sessions
-6. ✅ Wrote **RESEARCH_PLAN.md** - 12-week research roadmap with phases
-7. ✅ Wrote **HANDOFF.md** (this file) - Async communication protocol
+1. ✅ **Project Documentation**:
+   - Analyzed existing research sessions (3 sessions on voice conversion)
+   - Researched async collaboration best practices for AI-human research
+   - Created CLAUDE.md - Complete AI researcher guide
+   - Created RESEARCH_PLAN.md - 12-week research roadmap
+   - Created HANDOFF.md - Async communication protocol
+   - Created supporting docs (experiments/README.md, data/README.md, research_logs/README.md)
+   - Created first research log (research_logs/2025-10/2025-10-18.md)
+
+2. ✅ **Folder Structure**:
+   - Created all project folders (docs/, experiments/, data/, src/, configs/, results/, scripts/, paper/)
+   - Set up .gitignore for large files
+   - Git commits for all setup work
+
+3. ✅ **GCP/GCS Setup**:
+   - Created GCP project: `unbound-v1`
+   - Linked billing account (YN Billing Account)
+   - Created GCS bucket: `gs://unbound-v1-data/`
+   - Location: us-west1 (California region)
+   - Storage class: STANDARD
+   - Documented bucket details in data/README.md and CLAUDE.md
+
+4. ✅ **VCTK Dataset Download** (IN PROGRESS):
+   - Started download: VCTK-Corpus-0.92.zip (10.9GB)
+   - Using curl (server doesn't support parallel downloads)
+   - Download speed: ramped up to 13+ MB/s
+   - Progress as of 16:03: ~7-8GB downloaded, ~14 min remaining
+   - Background process running (bash ID: ad13d1)
 
 **Key Decisions Made**:
-- Using markdown + git for tracking (simple, async-friendly)
-- 5-phase approach: Research → Foundation → Competitive → Novel → Production
-- $5000 budget allocated across phases
-- Target: Beat Seed-VC (0.8676 similarity, 11.99% WER)
+- Budget corrected to $4971 (from $5000)
+- Using markdown + git for tracking (not W&B initially)
+- GCS bucket in us-west1 (California) instead of multi-region
+- Phase 0 focus on strategic research before coding
 
-**Files Created**:
-- `/CLAUDE.md` - Complete AI researcher guide
-- `/RESEARCH_PLAN.md` - Living research plan
-- `/HANDOFF.md` - This file
-- Folder structure: `docs/`, `research_logs/`, `experiments/`, `data/`, `src/`, etc.
+**Files Created/Modified**:
+- CLAUDE.md, RESEARCH_PLAN.md, HANDOFF.md
+- data/README.md, experiments/README.md, research_logs/README.md
+- research_logs/2025-10/2025-10-18.md
+- .gitignore (updated)
+- Git commits: 3 total
 
 ---
 
@@ -46,37 +69,37 @@
 
 ### Priority: HIGH 🔴
 
-1. **[HUMAN]** Set up Google Cloud Storage bucket
-   - **Why**: Need persistent storage for datasets (VCTK ~11GB, LibriTTS ~50GB)
-   - **What**: Create GCS bucket, provide Claude with access credentials
-   - **Blocking**: Data pipeline development (Phase 1)
+1. **[AI - NEXT SESSION]** Complete VCTK dataset setup
+   - **Status**: Download running in background (curl, bash ID: ad13d1)
+   - **Next steps**:
+     - Check if download completed
+     - Unzip VCTK-Corpus-0.92.zip
+     - Upload to gs://unbound-v1-data/data/raw/VCTK/
+     - Verify dataset integrity
+     - Document in data/README.md
 
-2. **[HUMAN]** Verify Modal credentials work
-   - **Why**: Need GPU compute for experiments ($5000 budget)
-   - **What**: Confirm Claude can run `modal run` commands
-   - **Blocking**: All GPU experiments (Phase 1+)
-
-3. **[AI]** Run Deep Research: Seed-VC Architecture
+2. **[AI]** Run Deep Research: Seed-VC Architecture
    - **Query**: "Seed-VC claims 0.8676 similarity and 11.99% WER. What is their exact architecture, training recipe, and datasets? What are known weaknesses or failure cases? What architectural improvements have been proposed since their publication?"
    - **Purpose**: Understand SOTA before designing our approach
    - **Output**: Save to `docs/seed_vc_analysis.md`
    - **Timeline**: This week (Phase 0)
+   - **Time**: ~10-15 minutes
 
-### Priority: MEDIUM 🟡
-
-4. **[AI]** Run Deep Research: Data Strategy
+3. **[AI]** Run Deep Research: Data Strategy
    - **Query**: "For training a one-shot voice conversion model, compare VCTK, LibriTTS, and AISHELL-3 in terms of: speaker diversity, recording quality, speaking style variety, and suitability for generalization. What data augmentation strategies are most effective?"
    - **Purpose**: Choose optimal dataset(s) for training
    - **Output**: Update `data/README.md` with findings
    - **Timeline**: This week (Phase 0)
 
-5. **[AI]** Architecture Comparison Analysis
+### Priority: MEDIUM 🟡
+
+4. **[AI]** Architecture Comparison Analysis
    - **Task**: Compare diffusion vs flow vs GAN decoders for voice conversion
    - **Include**: WavLM vs HuBERT vs Whisper for content encoding
    - **Output**: Write `docs/architecture.md` with trade-offs
    - **Timeline**: This week (Phase 0)
 
-6. **[AI]** Draft Architecture Proposal
+5. **[AI]** Draft Architecture Proposal
    - **Task**: 1-page proposal with design decisions and rationale
    - **Include**: Content encoder, style encoder, decoder, losses, training strategy
    - **Include**: Budget estimate for experiments
@@ -85,16 +108,11 @@
 
 ### Priority: LOW 🟢
 
-7. **[HUMAN]** Download VCTK dataset to GCS
-   - **When**: After GCS bucket is set up
-   - **Size**: ~11GB
-   - **URL**: https://datashare.ed.ac.uk/handle/10283/3443
-   - **Why**: Faster than Claude downloading, persistent storage
-
-8. **[HUMAN]** Clone reference codebases (optional)
-   - **Repos**: Seed-VC, FreeVC, others as identified
-   - **Why**: Study implementations, potentially adapt components
-   - **Note**: Claude can do this, but might be faster if you do
+6. **[HUMAN - PENDING]** Modal Credentials Verification
+   - **What**: Confirm Claude can run `modal run` commands
+   - **Why**: Need GPU compute for experiments ($4971 budget)
+   - **Blocking**: All GPU experiments (Phase 1+)
+   - **Status**: Not yet verified
 
 ---
 
@@ -110,24 +128,25 @@
 2. **[BLOCKING PHASE 1+]** Modal credentials
    - **Impact**: Cannot run GPU experiments
    - **Owner**: Human
-   - **Urgency**: High (need before Phase 1 Week 2-3)
+   - **Urgency**: Medium (need before Phase 1 Week 2-3)
+   - **Note**: Can do Phase 0 research without this
 
 ### Decisions Needed
 
 1. **[STRATEGIC]** Research vs Implementation Balance
    - **Question**: How much time in Phase 0? Deep research can take hours.
    - **Context**: 1 week planned, but can adjust
-   - **Your input**: Prefer quick start with less research, or thorough research first?
+   - **Your input**: Stick with 1 week of research, or move faster?
 
 2. **[STRATEGIC]** Paper Target Venue
    - **Question**: Arxiv only, or submit to conference (ICASSP, Interspeech)?
-   - **Context**: Affects timeline and rigor requirements
+   - **Context**: Affects rigor and timeline requirements
    - **Your input**: What's the publication goal?
 
-3. **[PRACTICAL]** Storage Strategy
-   - **Question**: Use GCS bucket, Modal Volumes, or both?
-   - **Context**: Need persistent storage for datasets and results
-   - **Your input**: What's easiest for you to set up?
+3. **[PRACTICAL]** Quality vs Speed Priority
+   - **Question**: If forced to choose, prioritize quality or inference speed?
+   - **Context**: Diffusion (higher quality, slower) vs Flow (good quality, faster)
+   - **Your input**: Which matters more for this project?
 
 ---
 
@@ -135,17 +154,19 @@
 
 ### Questions for Human
 
-1. Do you have a Modal account already? Are credits already loaded?
-2. Preferred cloud provider for storage (GCP, AWS, other)?
-3. Any time constraints on the 12-week timeline?
-4. Preference for inference speed vs quality if tradeoff needed?
+1. Do you have a Modal account already? Are $4971 credits already loaded?
+2. Any time constraints on the 12-week timeline?
+3. Preference for inference speed vs quality if tradeoff needed?
 
 ### Observations
 
+- GCS bucket setup went smoothly
+- VCTK download accelerated nicely (13+ MB/s after slow start)
+- Project has ~78GB local disk space (plenty for work)
 - The existing research sessions (DeepResearcher) are extremely high quality
 - We have solid understanding of the problem space from prior research
 - Phase 0 (research) will be low-cost but time-intensive
-- Budget ($5000) should be sufficient for 12-week plan if managed carefully
+- Budget ($4971) should be sufficient for 12-week plan if managed carefully
 
 ---
 
@@ -161,10 +182,11 @@
 - `DeepResearcher/research_sessions/voice_conversion_benchmark/` - Benchmark research
 - `ai_research_guide.md` - Research methodology guide
 
-### To Be Created
-- `docs/seed_vc_analysis.md` - SOTA analysis (pending Deep Research)
-- `docs/architecture.md` - Architecture comparison (pending analysis)
-- `data/README.md` - Data strategy (pending Deep Research)
+### New Documentation
+- `data/README.md` - Data management guide (includes GCS bucket info)
+- `experiments/README.md` - Experiment tracking guide
+- `research_logs/README.md` - Daily research log guide
+- `research_logs/2025-10/2025-10-18.md` - Today's detailed session log
 
 ---
 
@@ -188,75 +210,55 @@
 ## Git Commits This Session
 
 ```
-[2025-10-18] Initial project structure and documentation
-- Created folder structure (docs/, experiments/, data/, src/, etc.)
-- Added CLAUDE.md (AI researcher instructions)
-- Added RESEARCH_PLAN.md (12-week research roadmap)
-- Added HANDOFF.md (async communication protocol)
+[2025-10-18] feat: Initial research collaboration infrastructure
+- Created folder structure and documentation framework
+- 10 files changed, 2456 insertions(+)
+
+[2025-10-18] fix: Correct starting budget to $4971 Modal credits
+- Updated budget across all docs
+- 4 files changed, 20 insertions(+), 11 deletions(-)
+
+[2025-10-18] docs: Clarify human response handling in CLAUDE.md
+- Added instructions for transferring chat responses to HANDOFF.md
+- 1 file changed, 10 insertions(+)
+
+[2025-10-18] feat: Set up GCS bucket for data storage
+- Created GCP project unbound-v1, linked billing, created bucket
+- 3 files changed, 23 insertions(+), 10 deletions(-)
 ```
+
+---
+
+## Background Processes
+
+**Active Downloads**:
+- **Bash ID**: ad13d1
+- **Command**: `curl -L -o VCTK-Corpus-0.92.zip "https://datashare.ed.ac.uk/bitstream/handle/10283/3443/VCTK-Corpus-0.92.zip?sequence=2&isAllowed=y"`
+- **Status**: Running
+- **Progress** (as of 16:03): ~7-8GB of 10.9GB downloaded
+- **Speed**: 13+ MB/s
+- **ETA**: ~14 minutes remaining
+- **Location**: `/Users/yn/Documents/code/unbound-v1/data/raw/`
+
+**Next session**: Check download status with `BashOutput` tool
 
 ---
 
 ## Next Session Preview
 
 **For AI (Claude)**:
-1. Run Seed-VC deep research (if human approves)
-2. Run data strategy deep research
-3. Analyze architecture options
-4. Draft architecture proposal
-5. Update HANDOFF.md with findings
+1. Check VCTK download status (BashOutput bash ID: ad13d1)
+2. If complete: unzip and upload to GCS
+3. If not complete: wait or resume
+4. Run Seed-VC deep research query
+5. Run data strategy deep research query
+6. Update HANDOFF.md with progress
 
 **For Human**:
 1. Review this handoff document
-2. Set up GCS bucket (blocking)
-3. Verify Modal credentials (blocking)
-4. Answer decision questions above (strategic)
-5. Provide any other input/priorities
-
----
-
-## Communication
-
-### How to Use This File
-
-**AI Updates** (end of each session):
-- What was completed
-- What's next
-- Blockers and decisions needed
-- Questions and observations
-
-**Human Updates** (when reviewing):
-- Decisions made
-- New priorities
-- Blockers resolved
-- Answers to questions
-
-### Response Template for Human
-
-You can respond right here in this file:
-
-```markdown
-## Human Response - [DATE]
-
-### Decisions Made
-- [Decision 1]
-- [Decision 2]
-
-### Blockers Resolved
-- [Blocker 1]: Resolution
-
-### New Priorities
-- [Any changes to priorities]
-
-### Answers to Questions
-1. Modal account: [answer]
-2. Cloud storage: [answer]
-3. Timeline: [answer]
-4. Quality vs speed: [answer]
-
-### Other Notes
-[Anything else]
-```
+2. Verify Modal credentials if possible
+3. Answer strategic decision questions (timeline, paper venue, quality vs speed)
+4. Provide any other input/priorities
 
 ---
 
@@ -264,12 +266,12 @@ You can respond right here in this file:
 
 | Category | Status | Details |
 |----------|--------|---------|
-| **Phase** | Phase 0 | Strategic Research |
-| **Week** | 0 of 12 | Project setup complete |
-| **Budget** | $5000 / $5000 | No spending yet |
-| **Blockers** | 2 high | GCS bucket, Modal credentials |
-| **Next Milestone** | Architecture proposal | End of Week 1 |
+| **Phase** | Phase 0 | Setup & Infrastructure |
+| **Week** | 0 of 12 | Foundation week |
+| **Budget** | $4971 / $4971 | No spending yet |
+| **Blockers** | 1 medium | Modal credentials (not urgent) |
+| **Next Milestone** | Complete dataset download | Then start research queries |
 
 ---
 
-**Ready for async collaboration! Check this file for status updates and next steps.**
+**Infrastructure setup complete! Dataset downloading. Ready for Phase 0 research next session.** 🚀
