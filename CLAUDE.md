@@ -67,10 +67,11 @@ Read these files in order:
 ### 3. **End of Session**
 Update these files:
 1. `HANDOFF.md` - **Keep it concise!** (~100 lines max)
-   - Update: Current status, what's next (priorities), blockers/decisions, active processes
+   - Update: Current status, what's next (priorities), blockers/decisions, active processes (e.g., background downloads)
    - **Important**: If human provided responses/decisions in chat, transfer them into HANDOFF.md
    - **Don't accumulate history** - detailed notes go in research logs, not HANDOFF
    - HANDOFF is a rolling document showing only current state
+   - **Note**: Session-specific details (downloads, processes) go here, not in CLAUDE.md
 2. `RESEARCH_PLAN.md` - Update experiment status, add learnings, adjust roadmap
 3. `research_logs/YYYY-MM/YYYY-MM-DD.md` - Detailed session notes (what you did, findings, observations)
 4. Git commit with descriptive message referencing experiment IDs
