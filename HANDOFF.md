@@ -102,10 +102,10 @@
 
 ### Blockers
 
-1. **[BLOCKING PHASE 1]** GCS bucket setup
-   - **Impact**: Cannot start data pipeline
-   - **Owner**: Human
-   - **Urgency**: High (need before Phase 1 Week 2-3)
+1. ~~**[RESOLVED]** GCS bucket setup~~ ✅
+   - **Resolution**: Created `gs://unbound-v1-data/` in us-west1
+   - **Project**: unbound-v1 (with YN Billing Account)
+   - **Details**: See data/README.md
 
 2. **[BLOCKING PHASE 1+]** Modal credentials
    - **Impact**: Cannot run GPU experiments

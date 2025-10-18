@@ -33,7 +33,10 @@ Build a **single-shot voice conversion model** that:
 - **Budget**: $4971 Modal compute credits starting balance (use wisely!)
   - Note: Shared with low-usage system, actual balance may vary slightly
   - Request current balance from human when planning large experiments
-- **Storage**: ~20GB local (large data on GCS bucket or Modal volumes)
+- **Storage**:
+  - Local: ~20GB (limited - use for code and small files only)
+  - GCS Bucket: `gs://unbound-v1-data/` (us-west1, project: unbound-v1)
+  - Use GCS for datasets, results, checkpoints
 - **Timeline**: ~12 weeks estimated (see RESEARCH_PLAN.md)
 
 ### Success Criteria

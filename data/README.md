@@ -305,19 +305,29 @@ Checks:
 
 ## Data Access for Claude
 
-### Preferred Method: GCS Bucket
+### GCS Bucket (CONFIGURED ✅)
 
-Once human sets up bucket and credentials:
+**Bucket Details:**
+- **Name**: `gs://unbound-v1-data/`
+- **Project**: `unbound-v1`
+- **Location**: `us-west1` (California region)
+- **Storage Class**: `STANDARD`
+- **Billing**: YN Billing Account
+- **Created**: 2025-10-18
 
+**Usage:**
 ```bash
 # List datasets
-gsutil ls gs://your-bucket/data/
+gsutil ls gs://unbound-v1-data/
 
 # Download preprocessed data
-gsutil -m cp -r gs://your-bucket/data/processed/vctk_train data/processed/
+gsutil -m cp -r gs://unbound-v1-data/data/processed/vctk_train data/processed/
 
 # Upload results
-gsutil -m cp -r results/exp_025 gs://your-bucket/results/
+gsutil -m cp -r results/exp_025 gs://unbound-v1-data/results/
+
+# Upload datasets (for human)
+gsutil -m cp -r data/raw/VCTK gs://unbound-v1-data/data/raw/
 ```
 
 ### Alternative: Modal Volumes
