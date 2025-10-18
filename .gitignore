@@ -1,0 +1,109 @@
+# Voice Conversion Project - Git Ignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+venv/
+env/
+ENV/
+.venv
+DeepResearcher/.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+*.ipynb
+
+# Data (too large for git)
+data/raw/
+data/processed/
+*.wav
+*.flac
+*.mp3
+*.ogg
+
+# Model Checkpoints (use GCS/Modal instead)
+results/checkpoints/*.pt
+results/checkpoints/*.pth
+results/checkpoints/*.ckpt
+*.pt
+*.pth
+*.ckpt
+
+# Large Result Files
+results/samples/
+results/metrics/*.csv
+results/metrics/*.json
+
+# Logs
+*.log
+logs/
+wandb/
+
+# Modal
+.modal/
+__pycache__/
+
+# Temporary Files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets
+.env
+*.key
+*.pem
+credentials.json
+secrets/
+
+# Keep directory structure but ignore contents
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!results/checkpoints/.gitkeep
+!results/metrics/.gitkeep
+!results/samples/.gitkeep
+
+# Allow small example files
+!examples/*.wav
+!paper/figures/*.png
+!paper/figures/*.pdf
+
+# Keep README files
+!**/README.md
+
+# Allow configs
+!configs/*.yaml
+!configs/*.yml
