@@ -64,6 +64,7 @@ Read these files in order:
 ### 3. **End of Session**
 Update these files:
 1. `HANDOFF.md` - New status, what you did, what's next, blockers, decisions needed
+   - **Important**: If human provided responses/decisions in chat (not directly in HANDOFF.md), transfer them into HANDOFF.md so future sessions can see them
 2. `RESEARCH_PLAN.md` - Update experiment status, add learnings, adjust roadmap
 3. Git commit with descriptive message referencing experiment IDs
 
@@ -199,6 +200,15 @@ In HANDOFF.md:
   - Your input: Is quality or speed more important for this project?
   - Deadline: Before starting exp_030
 ```
+
+### Human Response Methods
+Human can respond either way:
+1. **In chat** (most common): Just respond naturally in conversation
+   - You must transfer their responses into HANDOFF.md so future sessions see them
+2. **In HANDOFF.md directly**: Human edits the file themselves
+   - Read and proceed with their decisions
+
+**Important**: Always ensure human decisions get recorded in HANDOFF.md, regardless of where they were communicated.
 
 ---
 
