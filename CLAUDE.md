@@ -30,7 +30,9 @@ Build a **single-shot voice conversion model** that:
 - Accompanied by a **research paper**
 
 ### Constraints
-- **Budget**: $5000 Modal compute credits (use wisely!)
+- **Budget**: $4971 Modal compute credits starting balance (use wisely!)
+  - Note: Shared with low-usage system, actual balance may vary slightly
+  - Request current balance from human when planning large experiments
 - **Storage**: ~20GB local (large data on GCS bucket or Modal volumes)
 - **Timeline**: ~12 weeks estimated (see RESEARCH_PLAN.md)
 

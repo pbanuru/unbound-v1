@@ -170,16 +170,18 @@
 
 ## Budget Status
 
-**Total Budget**: $5000 Modal credits
+**Starting Balance**: $4971 Modal credits
 **Spent This Session**: $0
-**Remaining**: $5000
+**Remaining (Estimated)**: $4971
+**Note**: Budget shared with low-usage system; may request actual balance when needed
 
 **Planned Allocation**:
 - Phase 0 (Research): $20 API calls
 - Phase 1 (Foundation): $500
 - Phase 2 (Competitive): $2000
-- Phase 3 (Novel): $2000
+- Phase 3 (Novel): $1950
 - Phase 4 (Production): $500
+- **Total**: ~$4970
 
 ---
 

@@ -21,7 +21,9 @@ Build a **state-of-the-art single-shot voice conversion model** that can convert
 6. **Open Source** release under Apache 2.0
 
 ### Constraints
-- **Budget**: $5000 Modal compute credits
+- **Budget**: $4971 Modal compute credits (starting balance)
+  - Note: Shared with low-usage system, actual balance may vary slightly
+  - Request current balance from human when needed
 - **Storage**: ~20GB local (use GCS bucket for large datasets)
 - **Datasets**: Open-source only (VCTK, LibriTTS, AISHELL-3, etc.)
 - **Timeline**: ~12 weeks target
@@ -317,18 +319,20 @@ Build a **state-of-the-art single-shot voice conversion model** that can convert
 ## Budget Tracking
 
 ### Total Budget
-- **Allocated**: $5000 Modal compute credits
-- **Spent**: $0
-- **Remaining**: $5000
+- **Starting Balance**: $4971 Modal compute credits
+- **Spent (This Project)**: $0
+- **Remaining (Estimated)**: $4971
+- **Note**: Budget shared with low-usage system; request actual balance from human when needed
 
-### Budget by Phase
+### Budget by Phase (Target Allocation)
 | Phase | Planned | Spent | Remaining |
 |-------|---------|-------|-----------|
 | Phase 0 | $20 (API) | $0 | $20 |
 | Phase 1 | $500 | $0 | $500 |
 | Phase 2 | $2000 | $0 | $2000 |
-| Phase 3 | $2000 | $0 | $2000 |
+| Phase 3 | $1950 | $0 | $1950 |
 | Phase 4 | $500 | $0 | $500 |
+| **Total** | **$4970** | **$0** | **$4970** |
 
 ### Recent Spending
 *No spending yet*
