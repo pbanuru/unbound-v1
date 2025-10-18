@@ -104,6 +104,27 @@ modal run experiments/exp_XXX/train.py
 - Don't train large models locally (too slow)
 - Use for: code verification, small dataset tests, evaluation scripts
 
+### Downloading Large Files
+When downloading datasets or large files, use `aria2c` for best results:
+
+**Download strategy:**
+1. **First try parallel**: `aria2c -x 16 -s 16 -o filename.zip "url"`
+   - `-x 16`: Use up to 16 connections per server
+   - `-s 16`: Split file into 16 pieces for parallel download
+   - Fastest if server supports HTTP range requests
+2. **If that fails** (e.g., "Invalid range header" errors): `aria2c -x 1 -s 1 -o filename.zip "url"`
+   - Single connection, no splitting
+   - Compatible with all servers
+   - Still better than curl (progress display, resume capability, auto-retry)
+3. **Avoid plain curl** unless aria2c is unavailable
+
+**Why aria2c is better:**
+- Better progress monitoring
+- Built-in resume with `-c` flag
+- Automatic retry on failure
+- Speed limiting options
+- Better error handling
+
 ---
 
 ## Experiment Workflow
@@ -148,7 +169,12 @@ Daily logs with:
 - Questions for human
 - Next session plans
 
-Format: `YYYY-MM-DD.md`
+**Format**: `YYYY-MM-DD.md` (one file per day)
+
+**Multiple sessions same day**: Append to the same file with session headers
+- Use `# Session 2 (Same Day)` or similar to separate
+- Keep all work from same day in one file for easier review
+- Don't create separate files like `2025-10-18-session2.md`
 
 ### Experiments (`/experiments/`)
 Each experiment folder contains:

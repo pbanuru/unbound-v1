@@ -77,6 +77,57 @@ data/
 
 **Usage**: For cross-lingual evaluation (Phase 3)
 
+---
+
+## Dataset Comparison (Deep Research Findings)
+
+**Research Date**: 2025-10-18 | **Web Searches**: 110
+
+### VCTK vs LibriTTS vs AISHELL-3
+
+| Criteria | VCTK | LibriTTS | AISHELL-3 |
+|----------|------|----------|-----------|
+| **Speakers** | 109 (balanced gender) | 2,456+ (male-heavy) | 218 (80% female, 80% <25yo) |
+| **Language** | English (UK accents) | English (US/UK) | Mandarin Chinese |
+| **Recording Quality** | Very high (studio, 96kHz) | High but variable (audiobooks) | Very high (controlled, 44.1kHz) |
+| **Consistency** | Excellent | Moderate (multi-source) | Excellent |
+| **Speaking Style** | Read speech (neutral) | Read speech (audiobook) | Read speech (neutral) |
+| **Generalization** | Good for UK English | Best for diverse English | Good for Mandarin only |
+| **Biases** | UK accent bias | Audiobook/formal text bias | Young female Mandarin bias |
+
+### Detailed Comparison
+
+#### Speaker Diversity
+- **VCTK**: ~110 English speakers, gender roughly balanced, various UK accents, broad adult ages
+- **LibriTTS**: **Several thousand** English speakers from diverse backgrounds (best for generalization to new English voices)
+- **AISHELL-3**: 218 Chinese speakers, heavily skewed (175 female/43 male, 175 under 25/43 over 25, 165 northern/51 southern)
+
+#### Recording Quality & Consistency
+- **VCTK**: Recorded in controlled studio at 96 kHz, very clean and uniform
+- **LibriTTS**: Compiled from audiobook recordings at 24 kHz, quality varies by speaker/equipment
+- **AISHELL-3**: Recorded in single professional setup at 44.1 kHz, minimal noise/reverb
+
+#### Speaking Style Variety
+- **All three are read speech only** - none contain conversational dialogue
+- VCTK: Newspaper text, "Rainbow" passage (accent elicitation)
+- LibriTTS: Classic literature/audiobook narration
+- AISHELL-3: Neutral scripted prompts
+
+#### Generalization to Unseen Speakers
+- **LibriTTS**: Best suited for English VC due to huge speaker count and variety
+- **VCTK**: Good for English but may overfit to UK accents (limited speaker count)
+- **AISHELL-3**: Useful only for Mandarin voices, language-specific
+
+#### Known Issues and Biases
+- **VCTK**: UK accent dominance, formal text only, one missing transcript (p315)
+- **LibriTTS**: Audiobook reader bias, male-heavy, classic literature style, no slang/casual speech
+- **AISHELL-3**: Young female northern Mandarin dominance, some speakers "hesitant or mechanical"
+
+### Recommendation for Our Project
+**Primary**: Start with VCTK for standard benchmarking and controlled experiments
+**Secondary**: Add LibriTTS for better generalization to diverse English voices
+**Future**: Use AISHELL-3 only if pursuing cross-lingual capabilities
+
 ## Data Download
 
 ### For Human Assistant
@@ -207,13 +258,78 @@ train_loader = DataLoader(
 
 ### Data Augmentation
 
-Apply augmentation for robustness:
+**Research-Backed Augmentation Strategies** (2025-10-18 Deep Research):
 
-- **Time stretching** (0.9x - 1.1x)
-- **Pitch shifting** (±2 semitones)
-- **Noise addition** (SNR: 20-40dB)
-- **Formant shifting** (for cross-gender)
-- **Reverberation** (small room impulse responses)
+Apply these augmentations during training to improve one-shot VC robustness and generalization:
+
+#### Recommended Augmentations
+
+1. **Pitch Shifting** ⭐ *Highly Effective*
+   - Randomly raise/lower F0 by ±2-4 semitones
+   - Simulates speakers with different voice pitch (male vs. female vs. child)
+   - Helps model disentangle pitch from timbre
+   - *Research note*: "Invaluable tool for audio augmentation"
+
+2. **Time Stretching (Speed Perturbation)** ⭐ *Highly Effective*
+   - Speed up or slow down by ±10-20% without changing pitch
+   - Creates variation in speaking rate and prosody
+   - *Research note*: "Widely used to cover variations machines must tolerate"
+
+3. **Noise Injection** ⭐ *Critical for Robustness*
+   - Add background noise at various SNRs (15-40 dB)
+   - Use diverse noise types: urban, music, crowd, office
+   - Recommendation: Use MUSAN or real-world noise corpora
+   - Makes model robust to real-world conditions
+   - *Research note*: "Significantly improves robustness"
+
+4. **Room Reverberation**
+   - Convolve with room impulse responses (RIRs)
+   - Simulates different acoustic spaces (small room, hall, etc.)
+   - Forces model to handle echo and distance variations
+   - *Research note*: "Prepares models for varied acoustic environments"
+
+5. **Volume Perturbation**
+   - Random gain changes (±6 dB)
+   - Helps model handle recording level differences
+
+6. **Spectral Shaping**
+   - Equalization adjustments
+   - Simulates different microphone characteristics
+
+7. **SpecAugment-Style Masking**
+   - Time/frequency masking on spectrograms
+   - Common in speech recognition, can help VC too
+
+#### Implementation Strategy
+```python
+# Example augmentation pipeline
+augmentations = [
+    PitchShift(semitones=(-3, 3)),       # ±3 semitones
+    TimeStretch(rate=(0.9, 1.1)),         # ±10% speed
+    AddNoise(snr=(15, 40), noise_dir='noise_corpus/'),
+    AddReverb(rir_dir='rir_corpus/'),
+    RandomGain(min_gain=-6, max_gain=6)
+]
+```
+
+#### Evidence from Research
+Recent VC studies show that **"simple data augmentation techniques"** combined with diverse training data vastly improved VC robustness to:
+- New accents
+- Noisy environments
+- Different recording conditions
+
+*Sources*: 110 web searches on data augmentation for voice conversion (2025-10-18)
+
+---
+
+### Legacy Augmentation List (Pre-Research)
+~~- **Time stretching** (0.9x - 1.1x)~~
+~~- **Pitch shifting** (±2 semitones)~~
+~~- **Noise addition** (SNR: 20-40dB)~~
+~~- **Formant shifting** (for cross-gender)~~
+~~- **Reverberation** (small room impulse responses)~~
+
+*Updated with research-backed strategies above*
 
 ## Data Statistics
 
