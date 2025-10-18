@@ -66,10 +66,14 @@ Read these files in order:
 
 ### 3. **End of Session**
 Update these files:
-1. `HANDOFF.md` - New status, what you did, what's next, blockers, decisions needed
-   - **Important**: If human provided responses/decisions in chat (not directly in HANDOFF.md), transfer them into HANDOFF.md so future sessions can see them
+1. `HANDOFF.md` - **Keep it concise!** (~100 lines max)
+   - Update: Current status, what's next (priorities), blockers/decisions, active processes
+   - **Important**: If human provided responses/decisions in chat, transfer them into HANDOFF.md
+   - **Don't accumulate history** - detailed notes go in research logs, not HANDOFF
+   - HANDOFF is a rolling document showing only current state
 2. `RESEARCH_PLAN.md` - Update experiment status, add learnings, adjust roadmap
-3. Git commit with descriptive message referencing experiment IDs
+3. `research_logs/YYYY-MM/YYYY-MM-DD.md` - Detailed session notes (what you did, findings, observations)
+4. Git commit with descriptive message referencing experiment IDs
 
 ---
 
