@@ -40,7 +40,7 @@
 3. **[AI]** Draft Architecture Proposal
    - Based on Seed-VC findings and architecture comparison
    - Include: Design decisions, rationale, budget estimate
-   - Output: Add to `RESEARCH_PLAN.md`
+   - Output: Add to `README.md`
    - Requires human review/approval before implementation
 
 ### MEDIUM Priority 🟡
@@ -154,4 +154,4 @@
 ---
 
 **For detailed session notes, see `research_logs/2025-10/2025-10-18.md`**
-**For full research plan, see `RESEARCH_PLAN.md`**
+**For full research plan, see `README.md`**

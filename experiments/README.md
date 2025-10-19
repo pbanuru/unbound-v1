@@ -165,7 +165,7 @@ python src/evaluation/eval.py \
 ```bash
 # Update notes.md with results
 # Save sample audio to samples/
-# Update RESEARCH_PLAN.md
+# Update README.md
 # Update HANDOFF.md
 # Git commit with descriptive message
 git commit -m "exp_026: [brief summary of findings]"
@@ -201,7 +201,7 @@ git commit -m "exp_026: [brief summary of findings]"
 ## Tracking Experiments
 
 ### Summary Table
-Maintain in RESEARCH_PLAN.md:
+Maintain in README.md:
 
 | Exp ID | Description | Similarity | WER | Notes | Paper |
 |--------|-------------|------------|-----|-------|-------|
@@ -253,14 +253,14 @@ Tag experiments for paper sections:
 - Document failure in notes.md
 - Analyze why (bug, bad config, wrong approach)
 - Don't delete - failed experiments are valuable
-- Update RESEARCH_PLAN.md with lessons learned
+- Update README.md with lessons learned
 
 ### Experiment Succeeded
 - Celebrate! 🎉
 - Document thoroughly
 - Save samples for paper
 - Set as baseline for future experiments
-- Update comparison table in RESEARCH_PLAN.md
+- Update comparison table in README.md
 
 ### Unclear Results
 - Need more analysis (ablations, visualizations)

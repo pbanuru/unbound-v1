@@ -37,7 +37,7 @@ Build a **single-shot voice conversion model** that:
   - Local: ~20GB (limited - use for code and small files only)
   - GCS Bucket: `gs://unbound-v1-data/` (us-west1, project: unbound-v1)
   - Use GCS for datasets, results, checkpoints
-- **Timeline**: ~12 weeks estimated (see RESEARCH_PLAN.md)
+- **Timeline**: ~12 weeks estimated (see README.md)
 
 ### Success Criteria
 1. Speaker similarity > 0.87
@@ -55,7 +55,7 @@ Since research sessions are async, follow this protocol:
 ### 1. **Start of Session**
 Read these files in order:
 1. `HANDOFF.md` - What's the current status? What needs to be done?
-2. `RESEARCH_PLAN.md` - What's the overall plan and current phase?
+2. `README.md` - What's the overall plan and current phase?
 3. Latest `research_logs/YYYY-MM/YYYY-MM-DD.md` - What happened last time?
 
 ### 2. **During Session**
@@ -72,7 +72,7 @@ Update these files:
    - **Don't accumulate history** - detailed notes go in research logs, not HANDOFF
    - HANDOFF is a rolling document showing only current state
    - **Note**: Session-specific details (downloads, processes) go here, not in CLAUDE.md
-2. `RESEARCH_PLAN.md` - Update experiment status, add learnings, adjust roadmap
+2. `README.md` - Update experiment status, add learnings, adjust roadmap
 3. `research_logs/YYYY-MM/YYYY-MM-DD.md` - Detailed session notes (what you did, findings, observations)
 4. Git commit with descriptive message referencing experiment IDs
 
@@ -148,7 +148,7 @@ When downloading datasets or large files, use `aria2c` for best results:
 ### After Experiment
 1. Log in research log (daily)
 2. Update HANDOFF.md (session status)
-3. Update RESEARCH_PLAN.md (experiment status, decisions)
+3. Update README.md (experiment status, decisions)
 4. Tag for paper if relevant (methods, results, ablation)
 5. Git commit: `exp_XXX: [brief description of findings]`
 
@@ -330,7 +330,7 @@ python scripts/compare_experiments.py \
 
 ### Can't Find Information
 1. Check HANDOFF.md first (current status)
-2. Check RESEARCH_PLAN.md (overall strategy)
+2. Check README.md (overall strategy)
 3. Check latest research logs (recent work)
 4. Check experiment notes (specific details)
 5. Ask human in HANDOFF.md if still unclear
@@ -345,13 +345,13 @@ python scripts/compare_experiments.py \
 1. Document failure in experiment notes
 2. Analyze why (bug, bad hyperparams, wrong approach?)
 3. Log lessons learned in research log
-4. Update RESEARCH_PLAN.md (adjust strategy)
+4. Update README.md (adjust strategy)
 5. Don't hide failures - they're valuable data!
 
 ### Unclear What to Do Next
 1. Check HANDOFF.md for queued tasks
 2. If tasks unclear, ask human to clarify
-3. If no tasks, review RESEARCH_PLAN.md and propose next steps
+3. If no tasks, review README.md and propose next steps
 4. Update HANDOFF.md with your proposal
 
 ---
@@ -387,7 +387,7 @@ python scripts/compare_experiments.py \
 
 ## Research Phases Overview
 
-Refer to RESEARCH_PLAN.md for details, but here's the high-level flow:
+Refer to README.md for details, but here's the high-level flow:
 
 1. **Phase 0: Strategic Research** (Week 1) - Understand SOTA, design approach
 2. **Phase 1: Foundation** (Week 2-3) - Data pipeline, eval harness, baseline
@@ -395,7 +395,7 @@ Refer to RESEARCH_PLAN.md for details, but here's the high-level flow:
 4. **Phase 3: Novel Improvements** (Week 7-9) - Original contributions
 5. **Phase 4: Production & Paper** (Week 10-12) - Polish, write, release
 
-Each phase has clear success criteria. Update RESEARCH_PLAN.md as you progress.
+Each phase has clear success criteria. Update README.md as you progress.
 
 ---
 
@@ -404,12 +404,12 @@ Each phase has clear success criteria. Update RESEARCH_PLAN.md as you progress.
 | Task | Command/File |
 |------|--------------|
 | Check current status | Read HANDOFF.md |
-| See overall plan | Read RESEARCH_PLAN.md |
+| See overall plan | Read README.md |
 | Run deep research | `cd DeepResearcher && uv run deep_research.py "query"` |
 | Create experiment | `mkdir experiments/exp_XXX_name` |
 | Run on Modal | `modal run path/to/script.py` |
 | Log daily work | `research_logs/2025-10/YYYY-MM-DD.md` |
-| Update status | HANDOFF.md, RESEARCH_PLAN.md |
+| Update status | HANDOFF.md, README.md |
 | Commit changes | `git commit -m "exp_XXX: description"` |
 
 ---

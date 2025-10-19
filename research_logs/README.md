@@ -97,7 +97,7 @@ Each daily log follows this template:
 ## Links
 
 - Related experiments: exp_XXX, exp_YYY
-- Updated docs: RESEARCH_PLAN.md, HANDOFF.md
+- Updated docs: README.md, HANDOFF.md
 - Deep Research: link to relevant research session
 ```
 
@@ -140,7 +140,7 @@ See `2025-10/2025-10-18.md` for the initial project setup log.
 - **Content**: Status, next steps, blockers, decisions
 - **Format**: Structured, action-oriented
 
-### RESEARCH_PLAN.md
+### README.md
 - **Frequency**: Weekly or after major milestones
 - **Audience**: Both (strategic overview)
 - **Content**: Phases, experiments, overall progress
